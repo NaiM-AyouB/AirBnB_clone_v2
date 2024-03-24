@@ -3,7 +3,7 @@
 starts a Flask web application
 """
 
-from flask import Flask
+from flask import Flask, abort
 app = Flask(__name__)
 
 
@@ -23,6 +23,22 @@ def hbnb():
 def c(text: str):
     """returns C text"""
     return 'C {}'.format(text.replace('_', ' '))
+
+
+@app.route('/python', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
+def python(text: str = 'is cool'):
+    """returns Python text"""
+    return 'Python {}'.format(text.replace('_', ' '))
+
+
+@app.route('/number/<n>', strict_slashes=False)
+def number(n: str):
+    """returns n is a number"""
+    try:
+        return '{} is a number'.format(int(n))
+    except ValueError:
+        abort(404)
 
 
 if __name__ == '__main__':
